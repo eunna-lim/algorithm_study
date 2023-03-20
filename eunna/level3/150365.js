@@ -72,3 +72,35 @@ function solution(n, m, x, y, r, c, k) {
 
   return answer;
 }
+
+function solution2(n, m, x, y, r, c, k) {
+  function abs(num) {
+    return num < 0 ? num * -1 : num;
+  }
+
+  function possible(pos) {
+    return pos[0] > 0 && pos[0] <= n && pos[1] > 0 && pos[1] <= m;
+  }
+
+  let rest = k - (abs(x - r) + abs(y - c));
+  if (rest < 0 || rest % 2 !== 0) return "impossible";
+
+  const move = { d: [1, 0], l: [0, -1], r: [0, 1], u: [-1, 0] };
+
+  // [x, y, 거리, 경로]
+  const queue = [[x, y, 0, ""]];
+  while (queue.length) {
+    const [x, y, dist, route] = queue.shift();
+
+    if (x === r && y === c && dist === k) return route;
+
+    for (d of Object.keys(move)) {
+      const [mx, my] = move[d];
+      const [nx, ny] = [x + mx, y + my];
+      if (possible([nx, ny]) && abs(nx - r) + abs(ny - c) + route.length < k) {
+        queue.push([nx, ny, dist + 1, route + d]);
+        break;
+      }
+    }
+  }
+}
