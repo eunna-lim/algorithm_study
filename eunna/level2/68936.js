@@ -56,3 +56,35 @@ function solution(arr) {
     [0, 0]
   );
 }
+
+// 시도했던 방법에서 위의 4분할 풀이를 추가해서 성공
+// 하지만 시간이 오래걸려서 효율성 측면에서는 위의 방법이 더 나음
+function solution2(arr) {
+  const compressed = new Set(arr.flat());
+  if (compressed.size === 1) return compressed.has(0) ? [1, 0] : [0, 1];
+
+  var answer = [0, 0];
+
+  function compress(part) {
+    if (part.length === 1) {
+      part[0].indexOf(0) > -1 ? answer[0]++ : answer[1]++;
+      return;
+    }
+
+    const compressed = new Set(part.flat());
+
+    if (compressed.size === 1) {
+      compressed.has(0) ? answer[0]++ : answer[1]++;
+    } else {
+      const len = part.length;
+      const p1 = part.splice(0, len / 2),
+        p2 = p1.map((row) => row.splice(len / 2, len / 2)),
+        p3 = part,
+        p4 = p3.map((row) => row.splice(len / 2, len / 2));
+      [p1, p2, p3, p4].forEach(compress);
+    }
+  }
+
+  compress(arr);
+  return answer;
+}
