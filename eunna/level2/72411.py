@@ -77,3 +77,26 @@ def solution(orders, course):
     answer = list(set(answer))
     answer.sort()
     return answer
+
+
+def solution2(orders, course):
+    answer = []
+
+    for num in course:
+        combinations = []
+        for order in orders:
+            combinations.extend(map(lambda x: ''.join(
+                sorted(x)), itertools.combinations(order, num)))
+
+        cntCombi = {}
+        for combi in combinations:
+            if combi in cntCombi:
+                cntCombi[combi] += 1
+            else:
+                cntCombi[combi] = 1
+
+        answer.extend([k for k, v in cntCombi.items() if v >=
+                      2 and v == max(cntCombi.values())])
+    answer = list(set(answer))
+    answer.sort()
+    return answer
