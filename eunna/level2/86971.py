@@ -35,3 +35,25 @@ def solution(n, wires):
             answer = min(answer, abs(len(network1) - (n - len(network1))))
 
     return answer
+
+
+def dfs(node, graph, visited):
+    visited[node] = True
+    return sum([1] + [dfs(u, graph, visited) for u in graph[node] if not visited[u]])
+
+
+# DFS 활용한 풀이 추가
+def solution2(n, wires):
+    answer = n
+    graph = make_graph(n, wires)
+
+    for i in range(0, len(wires)):
+        v1, v2 = wires[i]
+
+        visited = [False] * (n + 1)
+        visited[v1] = True
+        visited[v2] = True
+
+        answer = min(answer, abs(dfs(v1, graph, visited) - dfs(v2, graph, visited)))
+
+    return answer
