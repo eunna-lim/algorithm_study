@@ -10,7 +10,7 @@ def solution(N, road, K):
         graph[ver1].append([ver2, dist])
         graph[ver2].append([ver1, dist])
 
-    distances = [5000000] * (N + 1)
+    distances = [float("inf")] * (N + 1)
     distances[1] = 0
     hq = [[0, 1]]
     heapq.heapify(hq)
@@ -25,5 +25,4 @@ def solution(N, road, K):
                 heapq.heappush(hq, [next_dist, next_node])
 
     answer = len([d for d in distances if d <= K])
-
     return answer
