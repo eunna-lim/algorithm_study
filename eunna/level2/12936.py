@@ -29,3 +29,18 @@ def solution(n, k):
         n -= 1
 
     return answer
+
+
+from math import factorial
+
+
+def solution2(n, k):
+    answer = []
+    arr = list(range(1, n + 1))
+
+    for i in range(n - 1, -1, -1):
+        idx = (k - 1) // factorial(i)
+        answer.append(arr.pop(idx))
+        k = k % factorial(i)
+
+    return answer
